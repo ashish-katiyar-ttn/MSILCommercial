@@ -588,6 +588,24 @@
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Config\Include\MSIL\SiteDefinition.config" />
+    <Content Include="img\about-1.jpg" />
+    <Content Include="img\about-2.jpg" />
+    <Content Include="img\about-3.jpg" />
+    <Content Include="img\about-4.jpg" />
+    <Content Include="img\carousel-1.jpg" />
+    <Content Include="img\carousel-2.jpg" />
+    <Content Include="img\room-1.jpg" />
+    <Content Include="img\room-2.jpg" />
+    <Content Include="img\room-3.jpg" />
+    <Content Include="img\team-1.jpg" />
+    <Content Include="img\team-2.jpg" />
+    <Content Include="img\team-3.jpg" />
+    <Content Include="img\team-4.jpg" />
+    <Content Include="img\testimonial-1.jpg" />
+    <Content Include="img\testimonial-2.jpg" />
+    <Content Include="img\testimonial-3.jpg" />
+    <Content Include="img\testimonial-4.jpg" />
+    <Content Include="img\video.jpg" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\PageHader\PageHader.cshtml" />
     <None Include="Properties\PublishProfiles\MSILCommercial.pubxml" />
@@ -595,14 +613,26 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Main\AboutUs.cshtml" />
     <Content Include="Views\PageHader\CssLink.cshtml" />
+    <Content Include="Views\Main\Services.cshtml" />
+    <Content Include="Views\Main\PragatiLoyaltyProgram.cshtml" />
+    <Content Include="Views\Main\Booking.cshtml" />
+    <Content Include="Views\Main\OurTeam.cshtml" />
+    <Content Include="Views\Main\TestDrive.cshtml" />
+    <Content Include="Views\Main\Contact.cshtml" />
+    <Content Include="Views\Main\FindADealer.cshtml" />
+    <Content Include="Views\Navigation\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Extensions\ItemExtensions.cs" />
+    <Compile Include="Extensions\SiteExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\NavigationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -617,8 +647,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
