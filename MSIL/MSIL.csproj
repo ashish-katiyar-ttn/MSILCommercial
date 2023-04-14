@@ -732,6 +732,7 @@
     <Content Include="scss\bootstrap\scss\_type.scss" />
     <Content Include="scss\bootstrap\scss\_utilities.scss" />
     <Content Include="scss\bootstrap\scss\_variables.scss" />
+    <Content Include="Views\PageHader\PageFooter.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
