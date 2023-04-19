@@ -733,18 +733,29 @@
     <Content Include="scss\bootstrap\scss\_utilities.scss" />
     <Content Include="scss\bootstrap\scss\_variables.scss" />
     <Content Include="Views\PageHader\PageFooter.cshtml" />
+    <Content Include="Views\Main\Service.cshtml" />
+    <Content Include="Views\About\Index.cshtml" />
+    <Content Include="Views\Carousel\Index.cshtml" />
+    <Content Include="Views\Team\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\CarouselController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Extensions\ItemExtensions.cs" />
     <Compile Include="Extensions\SiteExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AboutViewModel.cs" />
+    <Compile Include="Models\CarouselModel.cs" />
     <Compile Include="Models\NavigationViewModel.cs" />
+    <Compile Include="Models\Services.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

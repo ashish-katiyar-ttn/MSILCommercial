@@ -1,0 +1,42 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using MSIL.Models
+@model Services
+@Html.Partial("~/Views/PageHader/CssLink.cshtml")
+@if (Model != null && Model.Slides != null && Model.Slides.Count > 0)
+{
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title text-center text-primary text-uppercase">Our Team</h6>
+                <h1 class="mb-5">Explore Our <span class="text-primary text-uppercase">Staffs</span></h1>
+            </div>
+            <div class="row g-4">
+                @{
+                    int count = 0;
+                }
+                @foreach (var slide in Model.Slides)
+                {
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="rounded shadow overflow-hidden">
+                            <div class="position-relative">
+                                @slide.Image
+                            </div>
+                            <div class="text-center p-4 mt-3">
+                                <h5 class="fw-bold mb-0">@slide.Title</h5>
+                                <small>@slide.SubTitle</small>
+                            </div>
+                        </div>
+                    </div>
+                    count++;
+                }
+            </div>
+        </div>
+    </div>
+
+
+               
+
+            
+}
+

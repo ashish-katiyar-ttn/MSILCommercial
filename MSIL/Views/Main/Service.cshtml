@@ -1,0 +1,97 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using MSIL.Models
+@model Services
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title text-center text-primary text-uppercase">Our Services</h6>
+                <h1 class="mb-5">Explore Our <span class="text-primary text-uppercase">Services</span></h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <a class="service-item rounded" href="">
+                        <div class="service-icon bg-transparent border rounded p-1">
+                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+                                <i class="fa fa-ravelry fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="mb-3">INGENUITY</h5>
+                        <p class="text-body mb-0">Creative and innovative solutions tailor-made to address the gap between home and hub life or cater to day to day business challenges.</p>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+                    <a class="service-item rounded" href="">
+                        <div class="service-icon bg-transparent border rounded p-1">
+                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+                                <i class="fa fa-handshake-o fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="mb-3">PARTNERSHIP</h5>
+                        <p class="text-body mb-0">Listening, understanding and designing product and service practices that foster partnership for maximum growth and progress..</p>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <a class="service-item rounded" href="">
+                        <div class="service-icon bg-transparent border rounded p-1">
+                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+                                <i class="fa fa-trophy fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="mb-3">EFFICIENCY</h5>
+                        <p class="text-body mb-0">Quick and efficient solutions and processes created to enhance productivity & growth of business.</p>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+                    <a class="service-item rounded" href="">
+                        <div class="service-icon bg-transparent border rounded p-1">
+                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+                                <i class="fa fa-flask fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="mb-3">OPENNESS & TRANSPARENCY</h5>
+                        <p class="text-body mb-0">Honesty and transparency across processes, dissemination of information and dealings, invoking a sense of genuineness.</p>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <a class="service-item rounded" href="">
+                        <div class="service-icon bg-transparent border rounded p-1">
+                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+                                <i class="fa fa-shield fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5 class="mb-3">RELIABILITY</h5>
+                        <p class="text-body mb-0">Inspiring trust by showcasing dependability in every interaction across the various aspects of the channel- availability, acquisition, performance & service.</p>
+                    </a>
+                </div>
+                @if (Model != null && Model.Slides != null && Model.Slides.Count > 0)
+                {
+                    
+                        int count = 0;
+                   
+                    foreach (Slide slide in Model.Slides)
+                    {
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                            <a class="service-item rounded" href="">
+                                <div class="service-icon bg-transparent border rounded p-1">
+                                    <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
+                                        <i class="@slide.iconLink"></i>
+                                    </div>
+                                </div>
+                                <h5 class="mb-3">@slide.Title</h5>
+                                <p class="text-body mb-0">@slide.SubTitle</p>
+                            </a>
+                        </div>
+                        count++;
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+
+
