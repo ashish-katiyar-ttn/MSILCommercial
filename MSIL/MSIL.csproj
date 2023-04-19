@@ -737,6 +737,7 @@
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Carousel\Index.cshtml" />
     <Content Include="Views\Team\Index.cshtml" />
+    <Content Include="Views\FindADelear\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -744,6 +745,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\CarouselController.cs" />
+    <Compile Include="Controllers\FindADelearController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
@@ -753,9 +755,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AboutViewModel.cs" />
+    <Compile Include="Models\APICall.cs" />
     <Compile Include="Models\CarouselModel.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\Dealers.cs" />
     <Compile Include="Models\NavigationViewModel.cs" />
     <Compile Include="Models\Services.cs" />
+    <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
