@@ -1,7 +1,7 @@
 ﻿@using Sitecore.Mvc
 @using Sitecore.Mvc.Presentation
 @using MSIL.Models
-@model AboutViewModel
+@model AboutModel
 <!DOCTYPE html>
 <html>
 <head>
@@ -125,17 +125,18 @@
     </style>
 </head>
 <body>
-    <form action="/" class="decor">
+    @using (Html.BeginForm("AboutManage", "Admin", FormMethod.Post, new { @class = "login" }))
+    {
         <div class="form-left-decoration"></div>
         <div class="form-right-decoration"></div>
         <div class="circle"></div>
         <div class="form-inner">
             <h1>About us</h1>
-            <input type="text" placeholder="Title" value="@Html.Sitecore().Field("Title", Model.Item)">
-            <input type="text" placeholder="Sub Title"value="@Html.Sitecore().Field("Sub_Title", Model.Item)">
-            <textarea placeholder="Description" rows="5">@Html.Sitecore().Field("{7ED0613D-DFE1-438E-BAED-F337713412A2}", Model.Item)</textarea>
-            <button type="submit" href="/">Submit</button>
+            @Html.TextBoxFor(a => a.Title)
+            @Html.TextBoxFor(a => a.SubTitle)
+            @Html.TextAreaFor(a => a.Description)
+            <button type="submit">Submit</button>
         </div>
-    </form>
+    }
 </body>
 </html>
