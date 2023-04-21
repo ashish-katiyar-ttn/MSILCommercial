@@ -637,6 +637,12 @@
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\PageHader\PageHader.cshtml" />
     <Content Include="lib\owlcarousel\LICENSE" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Team.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\AboutManage.cshtml" />
+    <None Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\MSILCommercial.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -738,11 +744,14 @@
     <Content Include="Views\Carousel\Index.cshtml" />
     <Content Include="Views\Team\Index.cshtml" />
     <Content Include="Views\FindADelear\Index.cshtml" />
+    <Content Include="Views\Main\AdminLogin.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\CarouselController.cs" />
     <Compile Include="Controllers\FindADelearController.cs" />
@@ -762,6 +771,7 @@
     <Compile Include="Models\NavigationViewModel.cs" />
     <Compile Include="Models\Services.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -776,6 +786,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
