@@ -1,9 +1,12 @@
-﻿using MSIL.Models;
+﻿using MSIL.Extensions;
+using MSIL.Models;
+using Sitecore.Common;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Links;
 using Sitecore.Mvc.Configuration;
 using Sitecore.Mvc.Presentation;
+using Sitecore.Security.Accounts;
 using Sitecore.Web.UI.WebControls;
 using System;
 using System.Collections.Generic;
@@ -26,7 +29,7 @@ namespace MSIL.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Login(UserModel um)
         {
-            Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{7200C77E-7657-4D5A-8E1E-5167DBEBD68D}"));
+            Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{500725AD-FE91-43DC-9258-30E68456B19B}"));
 
             var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
 
@@ -48,9 +51,21 @@ namespace MSIL.Areas.Admin.Controllers
             //Get Sitecore Item where you want to redirect
 
         }
-        [HttpPost]
+		public ActionResult AllUserList()
+		{
+			IFilterable<User> allUsers = UserManager.GetUsers();
+			List<UserListModel> userList = new List<UserListModel>();
+			foreach (User user in allUsers)
+			{
+				userList.Add(BuildUserList(user));
+			}
+			return View(userList);
+		}
+			[HttpPost]
 		public ActionResult AboutManage(AboutModel about)
 		{
+
+			
 			// Get item from ID:
 			Item item = Sitecore.Configuration.Factory.GetDatabase("master").GetItem("/sitecore/content/MSILCommercial/Data/About Content/about"); ;
 			item.Editing.BeginEdit();
@@ -113,6 +128,17 @@ namespace MSIL.Areas.Admin.Controllers
 					cache.Clear();
 				}
 			}
+		}
+		private UserListModel BuildUserList(User item)
+		{
+			return new UserListModel
+			{
+				AccountType = item.AccountType.ToString(),
+				Description = item.Description,
+				DisplayName = item.DisplayName,
+				Domain=item.Domain.ToString(),
+				Name=item.Name
+			};
 		}
 	}
 }

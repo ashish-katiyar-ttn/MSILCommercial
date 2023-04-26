@@ -640,6 +640,7 @@
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Team.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\AboutManage.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\AllUserList.cshtml" />
     <None Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
@@ -745,6 +746,7 @@
     <Content Include="Views\Team\Index.cshtml" />
     <Content Include="Views\FindADelear\Index.cshtml" />
     <Content Include="Views\Main\AdminLogin.cshtml" />
+    <Content Include="Views\Main\UserList.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -772,6 +774,7 @@
     <Compile Include="Models\NavigationViewModel.cs" />
     <Compile Include="Models\Services.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\UserListModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
