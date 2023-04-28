@@ -641,6 +641,7 @@
     <Content Include="Areas\Admin\Views\Admin\Team.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\AboutManage.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\AllUserList.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\CreateUsers.cshtml" />
     <None Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
@@ -747,6 +748,7 @@
     <Content Include="Views\FindADelear\Index.cshtml" />
     <Content Include="Views\Main\AdminLogin.cshtml" />
     <Content Include="Views\Main\UserList.cshtml" />
+    <Content Include="Views\Main\CreateUser.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -770,10 +772,13 @@
     <Compile Include="Models\APICall.cs" />
     <Compile Include="Models\CarouselModel.cs" />
     <Compile Include="Models\City.cs" />
+    <Compile Include="Models\CreateUser.cs" />
     <Compile Include="Models\Dealers.cs" />
     <Compile Include="Models\NavigationViewModel.cs" />
+    <Compile Include="Models\RoleList.cs" />
     <Compile Include="Models\Services.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\UserList.cs" />
     <Compile Include="Models\UserListModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

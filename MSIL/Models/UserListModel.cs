@@ -7,10 +7,8 @@ namespace MSIL.Models
 {
 	public class UserListModel
 	{
-		public string AccountType { get; set; }
-		public string Description { get; set; }
-		public string DisplayName { get; set; }
-		public string Domain { get; set; }
-		public string Name { get; set; }
+		public string Username { get; set; }
+		public List<UserList> userList {  get; set; }
+		public List<RoleLists> roleList { get; set; }
 	}
 }

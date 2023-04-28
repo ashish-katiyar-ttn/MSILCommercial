@@ -3,26 +3,45 @@
 }
 
 @using MSIL.Models
-@model List<UserListModel>
+@model UserListModel
 <h2>All User List</h2>
-<table class="table table-bordered table-responsive table-hover">
-    <tr>
-        <th>Account Type </th>
-        <th>Description </th>
-        <th>Display Name </th>
-        <th>Domain</th>
-        <th>Name</th>
-    </tr>
-    @foreach (var d in Model)
-    {
-        <tr>
-            <td>@d.AccountType</td>
-            <td>@d.Description</td>
-            <td>@d.DisplayName</td>
-            <td>@d.Domain</td>
-            <td>@d.Name</td>
-        </tr>
+    <a href="http://msilcommercial.local:82/CreateUser">Create User</a>
 
-    }
-</table>
+ <table class="table table-bordered table-responsive table-hover">
+            <tr>
+                <th>Account Type </th>
+                <th>Description </th>
+                <th>Display Name </th>
+                <th>Domain</th>
+                <th>Name</th>
+            </tr>
+            @foreach (var d in Model.userList)
+            {
+                <tr>
+                    <td>@d.AccountType</td>
+                    <td>@d.Description</td>
+                    <td>@d.DisplayName</td>
+                    <td>@d.Domain</td>
+                    <td>@d.Name</td>
+                </tr>
+
+            }
+        </table>
+        <h2>All Role List</h2>
+        <table class="table table-bordered table-responsive table-hover">
+            <tr>
+                <th>Account Type </th>
+                <th>Domain</th>
+                <th>Name</th>
+            </tr>
+            @foreach (var d in Model.roleList)
+            {
+                <tr>
+                    <td>@d.AccountType</td>
+                    <td>@d.Domain</td>
+                    <td>@d.Name</td>
+                </tr>
+
+            }
+        </table>
 

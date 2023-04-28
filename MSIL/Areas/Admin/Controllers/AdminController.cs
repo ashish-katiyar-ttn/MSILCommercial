@@ -13,6 +13,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Sitecore.Security.Accounts;
+
+using Sitecore.Security.Authentication;
+using Sitecore.Web.Authentication;
+using System.Web.Profile;
+using Sitecore.Pipelines.HttpRequest;
+using Sitecore.ApplicationCenter.Applications;
+using System.Web.Security;
+using UserList = MSIL.Models.UserList;
+using Sitecore.Shell.Framework.Commands.UserManager;
+using Sitecore.ContentSearch.Linq.Nodes;
 
 namespace MSIL.Areas.Admin.Controllers
 {
@@ -29,14 +40,82 @@ namespace MSIL.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Login(UserModel um)
         {
-            Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{500725AD-FE91-43DC-9258-30E68456B19B}"));
+			if(Login("sitecore",um.UserName,um.Password))
+			{
+				Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{5C0CAE66-AE54-4C05-BE2D-1C6BE9F9B2B0}"));
+				bool isAccess = CheckReadAccess("{5C0CAE66-AE54-4C05-BE2D-1C6BE9F9B2B0}", Sitecore.Context.User.LocalName);
+				//Session["UserName"] = Sitecore.Context.User.Name;
+				//AuthenticationManager.SetActiveUser(Sitecore.Context.User.Name);
+				var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
+				return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }),username= Sitecore.Context.User.Name });
+			}
+			else
+			{
+				Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{784BEF8A-47A9-48DC-B7BD-531C0D08DA83}"));
 
-            var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
+				var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
 
-            return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }) });
-
+				return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }) });
+			}
         }
-        public ActionResult AboutManage()
+		public ActionResult CreateUsers(string username)
+		{
+			CreateUser createUser = new CreateUser();
+			return View(createUser);
+		}
+		[HttpPost]
+		public ActionResult CreateUsers(CreateUser createUser)
+		{
+			string userName = string.Format(@"{0}\{1}", createUser.Domain, createUser.UserName);
+			try
+			{
+				if (Membership.GetUser(userName)==null)
+				{
+					Membership.CreateUser(userName, createUser.Password, createUser.Email);
+
+					// Edit the profile information
+					Sitecore.Security.Accounts.User user = Sitecore.Security.Accounts.User.FromName(userName, true);
+					Sitecore.Security.UserProfile userProfile = user.Profile;
+					userProfile.FullName = userName;
+					userProfile.Save();
+					
+				}
+			}
+			catch (Exception ex)
+			{
+				Sitecore.Diagnostics.Log.Error(string.Format("Error in Client.Project.Security.UserMaintenance (AddUser): Message: {0}; Source:{1}", ex.Message, ex.Source), this);
+			}
+			Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{5C0CAE66-AE54-4C05-BE2D-1C6BE9F9B2B0}"));
+			var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
+			return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }) });
+
+		}
+		public bool CheckReadAccess(string itemId, string UserName)
+		{
+			bool ReadAccess = false;
+
+			if (Sitecore.Data.ID.IsID(itemId))
+			{
+				Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse(itemId));
+				if (item != null)
+				{
+					//Sitecore.Security.Domains.Domain domain = Sitecore.Context.Domain;
+					//string domainUser = domain.Name + @"\" + UserName;
+					string domainUser = "sitecore" + @"\" + UserName;
+					if (Sitecore.Security.Accounts.User.Exists(domainUser))
+					{
+						Sitecore.Security.Accounts.User user = Sitecore.Security.Accounts.User.FromName(domainUser, false);
+						// UserSwitcher allows below code to run under a specific user 
+						using (new Sitecore.Security.Accounts.UserSwitcher(user))
+						{
+							ReadAccess = item.Access.CanRead();
+						}
+					}
+				}
+			}
+			return ReadAccess;
+		}
+		public ActionResult AboutManage()
         {
             // Get item from ID:
             Item item = Sitecore.Configuration.Factory.GetDatabase("master").GetItem("/sitecore/content/MSILCommercial/Data/About Content/about"); ;
@@ -51,17 +130,32 @@ namespace MSIL.Areas.Admin.Controllers
             //Get Sitecore Item where you want to redirect
 
         }
-		public ActionResult AllUserList()
+		public ActionResult AllUserList(string username)
 		{
-			IFilterable<User> allUsers = UserManager.GetUsers();
-			List<UserListModel> userList = new List<UserListModel>();
-			foreach (User user in allUsers)
+			//HttpCookie authCookie = System.Web.HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+			//FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+			//string u = ticket.Name;
+				//Membership.CreateUser("ashishk", "12345", "Test@test.com");
+				IFilterable<Sitecore.Security.Accounts.User> allUsers = UserManager.GetUsers();
+			UserListModel userListModel = new UserListModel();
+			userListModel.Username= username;
+			List<UserList> userList = new List<UserList>();
+			List<RoleLists> roleLists = new List<RoleLists>();
+			foreach (Sitecore.Security.Accounts.User user in allUsers)
 			{
 				userList.Add(BuildUserList(user));
 			}
-			return View(userList);
+			userListModel.userList = userList;
+			IEnumerable<Role> roleList = RolesInRolesManager.GetAllRoles();
+			foreach (Role role in roleList)
+			{
+				roleLists.Add(BuildRoleList(role));
+			}
+			userListModel.roleList = roleLists;	
+			return View(userListModel);
 		}
-			[HttpPost]
+
+		[HttpPost]
 		public ActionResult AboutManage(AboutModel about)
 		{
 
@@ -129,16 +223,40 @@ namespace MSIL.Areas.Admin.Controllers
 				}
 			}
 		}
-		private UserListModel BuildUserList(User item)
+		private UserList BuildUserList(Sitecore.Security.Accounts.User item)
 		{
-			return new UserListModel
+			return new UserList
 			{
 				AccountType = item.AccountType.ToString(),
 				Description = item.Description,
 				DisplayName = item.DisplayName,
+				Domain=item.Domain==null?"": item.Domain.ToString(),
+				Name=item.Name
+			};
+		}
+		private RoleLists BuildRoleList(Role item)
+		{
+			return new RoleLists
+			{
+				AccountType = item.AccountType.ToString(),
 				Domain=item.Domain.ToString(),
 				Name=item.Name
 			};
+		}
+		public static bool Login(string domainName, string userName, string password)
+		{
+			bool loginStatus=false;
+			// created username in old way just to see if anything changed, didnt
+			string username = domainName + @"\" + userName;
+			Sitecore.Security.Accounts.User virtualUser = Sitecore.Security.Authentication.AuthenticationManager.BuildVirtualUser(username, true);
+			// manual population 
+			virtualUser.Profile.FullName = username;
+			virtualUser.Profile.Save();
+			// login
+			loginStatus = Sitecore.Security.Authentication.AuthenticationManager.LoginVirtualUser(virtualUser);
+			Sitecore.Security.Authentication.AuthenticationManager.Login(username, password, persistent: true, allowLoginToShell: false);
+			System.Web.Security.FormsAuthentication.SetAuthCookie(username, true);
+			return loginStatus;
 		}
 	}
 }

@@ -1,5 +1,8 @@
 ﻿using MSIL.Models;
 using Sitecore.Data.Fields;
+using Sitecore.Data.Items;
+using Sitecore.Links;
+using Sitecore.Mvc.Configuration;
 using Sitecore.Mvc.Controllers;
 using Sitecore.Mvc.Presentation;
 using Sitecore.Web.UI.WebControls;
@@ -26,9 +29,19 @@ namespace MSIL.Controllers
         {
             return View();
         }
-
-        // GET: Dealer
-        [HttpPost]
+		public ActionResult CreateUser()
+		{
+			return View();
+		}
+		[HttpPost]
+		public ActionResult CreateUserRedirect(UserListModel userListModel)
+		{
+			Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{8226ED68-D939-4DB7-BBF3-D5F51475903B}"));
+			var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
+			return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }), username = userListModel.Username });
+		}
+		// GET: Dealer
+		[HttpPost]
         public JsonResult GetDealerDetails(string stateId)
         {
             string result = "success";
