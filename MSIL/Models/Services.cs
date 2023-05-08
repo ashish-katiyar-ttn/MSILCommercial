@@ -8,6 +8,7 @@ namespace MSIL.Models
 {
     public class Services
     {
+        public string Search { get; set; }
         public List<Service> Slides { get; set; }
     }
     public class Service

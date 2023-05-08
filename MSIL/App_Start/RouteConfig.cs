@@ -13,7 +13,10 @@ namespace MSIL
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             RouteTable.Routes.MapRoute("BookDetails", "BookDetails/GetBookDetails", new { controller = "BookDetails", action = "GetBookDetails" });
-
-        }
+			RouteTable.Routes.MapRoute(
+	"AllUserList",
+	"Admin/AllUserList", new { controller = "Admin", action = "AllUserList" }
+);
+		}
     }
 }

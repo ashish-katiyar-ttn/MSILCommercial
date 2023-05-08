@@ -3,94 +3,75 @@
 @using MSIL.Models
 @model Services
 
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title text-center text-primary text-uppercase">Our Services</h6>
-                <h1 class="mb-5">Explore Our <span class="text-primary text-uppercase">Services</span></h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <a class="service-item rounded" href="">
-                        <div class="service-icon bg-transparent border rounded p-1">
-                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-                                <i class="fa fa-ravelry fa-2x text-primary"></i>
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title text-center text-primary text-uppercase">FIND A vehicle</h6>
+            <h1 class="mb-5"><span class="text-primary text-uppercase">Search</span> A vehicle</h1>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-12">
+                <div class="wow fadeInUp" data-wow-delay="0.2s">
+
+                    <div class="row g-3">
+                        <div class="col-8">
+                            <div class="form-floating">
+                                <input type="text" id="searchvalue" placeholder="search" class="form-control">
+                                <label for="searchvalue">Search</label>
                             </div>
                         </div>
-                        <h5 class="mb-3">INGENUITY</h5>
-                        <p class="text-body mb-0">Creative and innovative solutions tailor-made to address the gap between home and hub life or cater to day to day business challenges.</p>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
-                    <a class="service-item rounded" href="">
-                        <div class="service-icon bg-transparent border rounded p-1">
-                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-                                <i class="fa fa-handshake-o fa-2x text-primary"></i>
-                            </div>
+
+                        <div class="col-2">
+                            <button id="btnSearch" class="btn btn-primary w-100 py-3">Search</button>
                         </div>
-                        <h5 class="mb-3">PARTNERSHIP</h5>
-                        <p class="text-body mb-0">Listening, understanding and designing product and service practices that foster partnership for maximum growth and progress..</p>
-                    </a>
+
+                    </div>
                 </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <a class="service-item rounded" href="">
-                        <div class="service-icon bg-transparent border rounded p-1">
-                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-                                <i class="fa fa-trophy fa-2x text-primary"></i>
-                            </div>
-                        </div>
-                        <h5 class="mb-3">EFFICIENCY</h5>
-                        <p class="text-body mb-0">Quick and efficient solutions and processes created to enhance productivity & growth of business.</p>
-                    </a>
+                <div class="row g-4" id="con" style="margin-top: 1px; margin-bottom: 23px;">
+
                 </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
-                    <a class="service-item rounded" href="">
-                        <div class="service-icon bg-transparent border rounded p-1">
-                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-                                <i class="fa fa-flask fa-2x text-primary"></i>
-                            </div>
-                        </div>
-                        <h5 class="mb-3">OPENNESS & TRANSPARENCY</h5>
-                        <p class="text-body mb-0">Honesty and transparency across processes, dissemination of information and dealings, invoking a sense of genuineness.</p>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <a class="service-item rounded" href="">
-                        <div class="service-icon bg-transparent border rounded p-1">
-                            <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-                                <i class="fa fa-shield fa-2x text-primary"></i>
-                            </div>
-                        </div>
-                        <h5 class="mb-3">RELIABILITY</h5>
-                        <p class="text-body mb-0">Inspiring trust by showcasing dependability in every interaction across the various aspects of the channel- availability, acquisition, performance & service.</p>
-                    </a>
-                </div>
-                @if (Model != null && Model.Slides != null && Model.Slides.Count > 0)
-                {
-                    
-                        int count = 0;
-                   
-                    foreach (Slide slide in Model.Slides)
-                    {
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                            <a class="service-item rounded" href="">
-                                <div class="service-icon bg-transparent border rounded p-1">
-                                    <div class="w-100 h-100 border rounded d-flex align-items-center justify-content-center">
-                                        <i class="@slide.iconLink"></i>
-                                    </div>
-                                </div>
-                                <h5 class="mb-3">@slide.Title</h5>
-                                <p class="text-body mb-0">@slide.SubTitle</p>
-                            </a>
-                        </div>
-                        count++;
-                    }
-                }
+
+
             </div>
         </div>
     </div>
-    <!-- Service End -->
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+       
+        $("#btnSearch").on('click', function () {
+            var Id = $("#searchvalue").val();
+            if (Id != "") {
+                $.ajax({
+                    url: "http://msilcommercial.local:82/api/sitecore/Main/GetCar",
+                    type: "GET",
+                    data: { searchtxt: Id },
+                    context: this,
+                    success: function (data) {
+                        var mySelect = $('#con');
+                        $('#con').html("");
+                        $.each(data, function (val, text) {
+                            var html = '<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"><div class="rounded shadow overflow-hidden" ><div class="text-center p-4 mt-3"><h5 class="fw-bold mb-0"><i class="fa fa-envelope me-3"></i>' + text.Name + '</h5><small><i class="fa fa-map-marker me-3"></i>' + text.Variants[0].Name + '</small><br /><small><i class="fa fa-phone me-3"></i>' + text.Variants[1].Name +'</small></div></div></div>';
+                            mySelect.append(html);
+                        });
+                    },
+                    error: function (data) {
+                        console.log("error", data);
+                    }
+                });
+            }
+            else {
+            }
+
+        });
+
+
+        });
+    </script>
+
+
 
 
 

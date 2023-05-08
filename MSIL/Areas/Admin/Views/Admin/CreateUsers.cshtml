@@ -1,35 +1,86 @@
 ﻿@{Layout = null;}
 @using MSIL.Models
 @model CreateUser
-<div class="container">
-    <div class="screen">
-        <div class="screen__content">
-
-            @using (Html.BeginForm("CreateUsers", "Admin", FormMethod.Post, new { @class = "login" }))
-            {
-                @*<form class="login">*@
-                <div class="login__field">
-                    <i class="login__icon fas fa-user"></i>
-                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "UserName", @class = "login__input" })
-                    @*<input type="text" class="login__input" placeholder="User name / Email">*@
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Analytics.Extensions
+@Html.Sitecore().VisitorIdentification()
+<!-- Contact Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title text-center text-primary text-uppercase">Add User</h6>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-12">
+                <div class="wow fadeInUp" data-wow-delay="0.2s">
+                    @using (Html.BeginForm("CreateUsers", "Admin", FormMethod.Post, new { @class = "login" }))
+                    {
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "UserName", @class = "form-control" })
+                                    <label for="UserName">UserName</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.TextBoxFor(m => m.Password, new { placeholder = "Password", @class = "form-control", @type = "password" })
+                                    <label for="Password">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "form-control" })
+                                    <label for="Email">Email</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    @Html.DropDownListFor(n => n.Role, new SelectList(Model.RolesList, "Id", "Name"), new { placeholder = "Role", @class = "form-control" })
+                                    <label for="Role">Role</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100 py-3" type="submit">Create User</button>
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="login__field">
-                    <i class="login__icon fas fa-lock"></i>
-                    @Html.TextBoxFor(m => m.Password, new { placeholder = "Password", @class = "login__input", @type = "password" })
-                    @*<input type="password" class="login__input" placeholder="Password">*@
-                </div>
-                <div class="login__field">
-                    <i class="login__icon fas fa-lock"></i>
-                    @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "login__input" })
-                    @*<input type="password" class="login__input" placeholder="Password">*@
-                </div>
-                <button class="button login__submit" type="submit">
-                    <span class="button__text">Create</span>
-                    <i class="button__icon fas fa-chevron-right"></i>
-                </button>
-                @*</form>*@
-            }
+            </div>
         </div>
     </div>
 </div>
 
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<!-- https://jquery.com/download/ -->
+<script src="~/js/moment.min.js"></script>
+<!-- https://momentjs.com/ -->
+<script src="~/js/Chart.min.js"></script>
+<!-- http://www.chartjs.org/docs/latest/ -->
+<script src="~/js/bootstrap.min.js"></script>
+<!-- https://getbootstrap.com/ -->
+<script src="~/js/tooplate-scripts.js"></script>
+<script>Chart.defaults.global.defaultFontColor = 'white';
+        let ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie,
+            lineChart;
+        barChart, pieChart;
+        // DOM is ready
+        $(function () {
+            drawLineChart(); // Line Chart
+            drawBarChart(); // Bar Chart
+            drawPieChart(); // Pie Chart
+
+            $(window).resize(function () {
+                updateLineChart();
+                updateBarChart();
+            });
+        })</script>
+<!-- Contact End -->
