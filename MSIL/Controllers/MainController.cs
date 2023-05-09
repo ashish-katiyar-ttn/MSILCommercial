@@ -92,6 +92,24 @@ namespace MSIL.Controllers
 			}
 			return null;
 		}
+		[HttpPost]
+		public ActionResult Logout()
+		{
+			if (Sitecore.Context.User.IsAuthenticated)
+			{
+				LogoutUser();
+				Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse(AccountsSettings.Fields.LoginPage));
+				var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
+				Response.Redirect(pathInfo);
+			}
+			else
+			{
+				Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse(AccountsSettings.Fields.Error));
+				var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
+				Response.Redirect(pathInfo);
+			}
+			return null;
+		}
 		// GET: Dealer
 		[HttpPost]
         public JsonResult GetDealerDetails(string stateId)
@@ -187,6 +205,25 @@ namespace MSIL.Controllers
 				ContactId = Tracker.Current?.Contact?.ContactId
 			};
 			CorePipeline.Run("accounts.loggedIn", args);
+			return args.Aborted;
+		}
+		public void LogoutUser()
+		{
+			var user = AuthenticationManager.GetActiveUser();
+			AuthenticationManager.Logout();
+			if (user != null)
+			{
+				RunLoggedOut(user);
+			}
+		}
+		public bool RunLoggedOut(User user)
+		{
+			var args = new AccountsPipelineArgs()
+			{
+				User = user,
+				UserName = user.Name
+			};
+			CorePipeline.Run("accounts.loggedOut", args);
 			return args.Aborted;
 		}
 	}

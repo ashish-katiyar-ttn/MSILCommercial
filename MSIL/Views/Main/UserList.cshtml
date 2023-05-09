@@ -70,9 +70,12 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link d-block" href="/Index">
+                    @Html.BeginForm("Logout", "Main", FormMethod.Post)
+                    {
+                    <button type="submit">
                         @Sitecore.Context.User.LocalName, <b>Logout</b>
-                    </a>
+                    </button>
+                    }
                 </li>
             </ul>
         </div>
