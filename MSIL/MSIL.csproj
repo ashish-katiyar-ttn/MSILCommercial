@@ -924,6 +924,8 @@
     <Content Include="Views\Main\Dashboard.cshtml" />
     <Content Include="Views\Main\DashboardData.cshtml" />
     <Content Include="Views\Main\Error.cshtml" />
+    <Content Include="Views\Main\Publish.cshtml" />
+    <Content Include="Views\Main\Publisher.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

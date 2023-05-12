@@ -32,37 +32,6 @@ namespace MSIL.Areas.Admin.Controllers
 
             return View(userModel);
         }
-        [HttpPost]
-        public ActionResult Login(UserModel um)
-        {
-			Sitecore.Security.Domains.Domain domain = Sitecore.Context.Domain;
-			if (!string.IsNullOrEmpty(um.UserName) && !string.IsNullOrEmpty(um.Password))
-			{
-				string ticketID = TicketManager.GetCurrentTicketId();
-				if (!string.IsNullOrEmpty(ticketID))
-					TicketManager.RemoveTicket(ticketID);
-					// Create virtual user
-					Sitecore.Security.Accounts.User user =
-						AuthenticationManager.BuildVirtualUser(string.Format(@"{0}\{1}", domain, um.UserName), false);
-					if (user != null)
-					{
-					// Assign more roles or edit the user profile
-					user.Profile.Name = string.Format(@"{0}\{1}", domain, um.UserName);
-					user.Profile.Save();
-					user.Profile.Reload();
-					// Login the user
-					AuthenticationManager.LoginVirtualUser(user);
-					Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{8226ED68-D939-4DB7-BBF3-D5F51475903B}"));
-					bool isAccess = CheckReadAccess("{5C0CAE66-AE54-4C05-BE2D-1C6BE9F9B2B0}", Sitecore.Context.User.LocalName);
-					Session["UserName"] = Sitecore.Context.User.Name;
-					AuthenticationManager.SetActiveUser(Sitecore.Context.User.Name);
-					var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
-					return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }) });
-				}
-			}
-			return null;
-
-		}
 		public ActionResult CreateUsers()
 		{
 			CreateUser createUser = new CreateUser();
@@ -110,31 +79,6 @@ namespace MSIL.Areas.Admin.Controllers
 			Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{8226ED68-D939-4DB7-BBF3-D5F51475903B}"));
 			var pathInfo = LinkManager.GetItemUrl(item, UrlOptions.DefaultOptions);
 			return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }) });
-		}
-		public bool CheckReadAccess(string itemId, string UserName)
-		{
-			bool ReadAccess = false;
-
-			if (Sitecore.Data.ID.IsID(itemId))
-			{
-				Item item = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse(itemId));
-				if (item != null)
-				{
-					Sitecore.Security.Domains.Domain domain = Sitecore.Context.Domain;
-					string domainUser = domain.Name + @"\" + UserName;
-					//string domainUser = "sitecore" + @"\" + UserName;
-					if (Sitecore.Security.Accounts.User.Exists(domainUser))
-					{
-						Sitecore.Security.Accounts.User user = Sitecore.Security.Accounts.User.FromName(domainUser, false);
-						// UserSwitcher allows below code to run under a specific user 
-						using (new Sitecore.Security.Accounts.UserSwitcher(user))
-						{
-							ReadAccess = item.Access.CanRead();
-						}
-					}
-				}
-			}
-			return ReadAccess;
 		}
 		public ActionResult AboutManage()
         {
@@ -205,26 +149,26 @@ namespace MSIL.Areas.Admin.Controllers
 				// what the code is doing
 				item.Editing.CancelEdit();
 			}
-			using (new Sitecore.SecurityModel.SecurityDisabler())
-			{
-				string itemId = "05974ECC-4214-443D-BE6A-9FD354B94748";
+			//using (new Sitecore.SecurityModel.SecurityDisabler())
+			//{
+			//	string itemId = "05974ECC-4214-443D-BE6A-9FD354B94748";
 
-				Database webdb = Sitecore.Configuration.Factory.GetDatabase("web");
-				Database masterdb = Sitecore.Configuration.Factory.GetDatabase("master");
+			//	Database webdb = Sitecore.Configuration.Factory.GetDatabase("web");
+			//	Database masterdb = Sitecore.Configuration.Factory.GetDatabase("master");
 
-				ClearSitecoreDatabaseCache(masterdb);
+			//	ClearSitecoreDatabaseCache(masterdb);
 
-				Item masterItem = masterdb.GetItem(new ID(itemId));
+			//	Item masterItem = masterdb.GetItem(new ID(itemId));
 
-				// target databases
-				Database[] databases = new Database[1] { webdb };
+			//	// target databases
+			//	Database[] databases = new Database[1] { webdb };
 
-				Sitecore.Handle publishHandle = Sitecore.Publishing.PublishManager.PublishItem(masterItem, databases, webdb.Languages, true, false);
+			//	Sitecore.Handle publishHandle = Sitecore.Publishing.PublishManager.PublishItem(masterItem, databases, webdb.Languages, true, false);
 
-				ClearSitecoreDatabaseCache(webdb);
-			}
+			//	ClearSitecoreDatabaseCache(webdb);
+			//}
 
-			Item items = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse("{7200C77E-7657-4D5A-8E1E-5167DBEBD68D}"));
+			Item items = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse(AccountsSettings.Fields.AfterLoginPage));
 
 			var pathInfo = LinkManager.GetItemUrl(items, UrlOptions.DefaultOptions);
 
@@ -288,31 +232,6 @@ namespace MSIL.Areas.Admin.Controllers
 			}
 			return false;
 		}
-		public static bool Login(string domainName, string userName, string password)
-		{
-			bool loginStatus=false;
-			// created username in old way just to see if anything changed, didnt
-			string username = domainName + @"\" + userName;
-			string ticketID = TicketManager.GetCurrentTicketId();
-			if (!string.IsNullOrEmpty(ticketID))
-				TicketManager.RemoveTicket(ticketID);
-
-			// created username in old way just to see if anything changed, didnt
-			Sitecore.Security.Accounts.User virtualUser = Sitecore.Security.Authentication.AuthenticationManager.BuildVirtualUser(username, false);
-			// manual population 
-			virtualUser.Profile.FullName = username;
-			virtualUser.Profile.Save();
-			// login
-			loginStatus = Sitecore.Security.Authentication.AuthenticationManager.LoginVirtualUser(virtualUser);
-			// Sitecore.Security.Authentication.AuthenticationManager.Login(username, password, persistent: false, allowLoginToShell: false); 
-			return loginStatus;
-		}
-		public static bool LoginAndSetUser(Sitecore.Security.Accounts.User user)
-		{
-			string ticketID = TicketManager.GetCurrentTicketId();
-			if (!string.IsNullOrEmpty(ticketID))
-				TicketManager.RemoveTicket(ticketID);
-			return AuthenticationManager.Login(user);
-		}
+		
 	}
 }

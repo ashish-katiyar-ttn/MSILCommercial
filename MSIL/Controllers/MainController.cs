@@ -21,6 +21,7 @@ using MSIL.Pipelines;
 using MSIL.Repositories;
 using static Sitecore.Configuration.Settings;
 using Sitecore.Data;
+using Sitecore.Web.UI.WebControls;
 
 namespace MSIL.Controllers
 {
@@ -225,6 +226,74 @@ namespace MSIL.Controllers
 			};
 			CorePipeline.Run("accounts.loggedOut", args);
 			return args.Aborted;
+		}
+		public ActionResult Publish()
+		{
+			return View();
+		}
+		public ActionResult Publisher()
+		{
+			if (IsAuthenticated())
+			{
+				// Get item from ID:
+				Item item = Sitecore.Configuration.Factory.GetDatabase("master").GetItem("/sitecore/content/MSILCommercial/Data/About Content/about"); ;
+				var model = new AboutModel()
+				{
+					Title = item.Fields["Title"].Value,
+					SubTitle = item.Fields["Sub_Title"].Value,
+					Description = new MvcHtmlString(FieldRenderer.Render
+							(item, "Description")).ToString(),
+				};
+				return View(model);
+			}
+			else
+				return null;
+		}
+		[HttpPost]
+		public ActionResult Publisher(AboutModel about)
+		{
+			using (new Sitecore.SecurityModel.SecurityDisabler())
+			{
+				string itemId = "05974ECC-4214-443D-BE6A-9FD354B94748";
+
+				Database webdb = Sitecore.Configuration.Factory.GetDatabase("web");
+				Database masterdb = Sitecore.Configuration.Factory.GetDatabase("master");
+
+				ClearSitecoreDatabaseCache(masterdb);
+
+				Item masterItem = masterdb.GetItem(new ID(itemId));
+
+				// target databases
+				Database[] databases = new Database[1] { webdb };
+
+				Sitecore.Handle publishHandle = Sitecore.Publishing.PublishManager.PublishItem(masterItem, databases, webdb.Languages, true, false);
+
+				ClearSitecoreDatabaseCache(webdb);
+			}
+
+			Item items = Sitecore.Context.Database.GetItem(Sitecore.Data.ID.Parse(AccountsSettings.Fields.AfterLoginPage));
+
+			var pathInfo = LinkManager.GetItemUrl(items, UrlOptions.DefaultOptions);
+
+			return RedirectToRoute(MvcSettings.SitecoreRouteName, new { pathInfo = pathInfo.TrimStart(new char[] { '/' }) });
+
+		}
+		public void ClearSitecoreDatabaseCache(Database db)
+		{
+			// clear html cache
+			Sitecore.Context.Site.Caches.HtmlCache.Clear();
+
+			db.Caches.ItemCache.Clear();
+			db.Caches.DataCache.Clear();
+
+			//Clear prefetch cache
+			foreach (var cache in Sitecore.Caching.CacheManager.GetAllCaches())
+			{
+				if (cache.Name.Contains(string.Format("Prefetch data({0})", db.Name)))
+				{
+					cache.Clear();
+				}
+			}
 		}
 	}
 }

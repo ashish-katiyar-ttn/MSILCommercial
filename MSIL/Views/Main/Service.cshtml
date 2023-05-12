@@ -53,7 +53,7 @@
                         var mySelect = $('#con');
                         $('#con').html("");
                         $.each(data, function (val, text) {
-                            var html = '<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"><div class="rounded shadow overflow-hidden" ><div class="text-center p-4 mt-3"><h5 class="fw-bold mb-0"><i class="fa fa-envelope me-3"></i>' + text.Name + '</h5><small><i class="fa fa-map-marker me-3"></i>' + text.Variants[0].Name + '</small><br /><small><i class="fa fa-phone me-3"></i>' + text.Variants[1].Name +'</small></div></div></div>';
+                            var html = '<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"><div class="rounded shadow overflow-hidden" ><div class="text-center p-4 mt-3"><h5 class="fw-bold mb-0"><i class="fa fa-car me-3"></i>' + text.Name + '</h5><small><i class="fa fa-plug me-3"></i>' + text.Variants[0].Name + '</small><br /><small><i class="fa fa-plug me-3"></i>' + text.Variants[1].Name +'</small></div></div></div>';
                             mySelect.append(html);
                         });
                     },
