@@ -27,8 +27,10 @@ namespace MSIL.Controllers
 {
 	public class MainController : SitecoreController
     {
-        // GET: Main
-        public ActionResult Index()
+		// GET: Main
+
+		[CustomOutputCache(duration: 120)]
+		public ActionResult Index()
         {
             return View();
         }

@@ -10,9 +10,11 @@ using System.Web.Mvc;
 
 namespace MSIL.Controllers
 {
-    public class CarouselController : Controller
+	
+	public class CarouselController : Controller
     {
-        public ActionResult Index()
+		[CustomOutputCache(duration: 120)]
+		public ActionResult Index()
         {
             var model = new CarouselModel();
             List<Slide> slides = new List<Slide>();
